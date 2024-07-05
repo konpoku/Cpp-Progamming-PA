@@ -1,6 +1,7 @@
 #ifndef UI_H
 #define UI_H
 #include"user.h"
+#include"carDB.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -16,7 +17,7 @@ public:
     bool registerUser();
     void logout();
 private:
-    UserManager* userManager;
+    //UserManager* userManager;
     User* currentUser = NULL;
     bool isLoggedIn;
 };

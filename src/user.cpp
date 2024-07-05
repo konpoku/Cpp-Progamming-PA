@@ -1,11 +1,18 @@
 #include "user.h"
-
 User::User(std::string name, std::string password) : name(name)
 {
-    setPassword(password);
+    if(setPassword(password) < 0)
+    {
+        std::cout<<"密码太长，请不要多于20个字符"<<std::endl;
+    }
 }
 int User::setPassword(std::string password)
 {
+    if (password.length() > 20)
+    {
+        return -1;
+    }
+    
     for (auto c : password)
     {
         passwdHash += c;

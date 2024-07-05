@@ -55,4 +55,7 @@ private:
     std::vector<User *> users;
     std::map<std::string, User *> userMap;
 };
+
+
+extern UserManager userManager;
 #endif // USER_H

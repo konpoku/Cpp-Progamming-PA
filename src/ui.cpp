@@ -2,7 +2,6 @@
 // TODO: 清理屏幕
 UI::UI()
 {
-    userManager = new UserManager();
     currentUser = nullptr;
 }
 
@@ -16,7 +15,7 @@ bool UI::login()
     std::string name, password;
     std::cout << "请输入用户名: ";
     std::cin >> name;
-    User *user = userManager->getUser(name);
+    User *user = userManager.getUser(name);
     if (user == nullptr)
     {
         std::cout << "用户不存在" << std::endl;
@@ -51,7 +50,7 @@ bool UI::registerUser()
     std::string name, passwordFirst, passwordSecond;
     std::cout << "请输入用户名: ";
     std::cin >> name;
-    if (userManager->getUser(name) != nullptr)
+    if (userManager.getUser(name) != nullptr)
     {
         std::cout << "用户已存在" << std::endl;
         return false;
@@ -65,8 +64,8 @@ bool UI::registerUser()
         std::cout << "两次输入密码不一致" << std::endl;
         return false;
     }
-    User *user = userManager->createUser(name, passwordFirst, false);
-    userManager->createUser(name, passwordFirst, false);
+    User *user = userManager.createUser(name, passwordFirst, false);
+    userManager.createUser(name, passwordFirst, false);
     currentUser = user;
     std::cout << "注册成功" << std::endl;
     return true;
