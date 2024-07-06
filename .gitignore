@@ -3,3 +3,6 @@ out
 src/test.dSYM
 */.DS_Store
 .DS_Store
+/src/html/
+/src/latex/
+/src/Doxygen.config
