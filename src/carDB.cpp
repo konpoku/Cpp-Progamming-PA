@@ -24,15 +24,22 @@ void CarManager::addCar(std::string &plate, std::string &owner, CarType type, in
     userCarsList[owner].push_back(newCar);
 }
 
-void CarManager::deleteCar(std::string &plate)
+bool CarManager::deleteCar(std::string &plate)
 {
+    auto checker = carMap.find(plate);
+    if (checker == carMap.end())
+    {
+        return false;
+    }
     Car *car = carMap[plate];
     User *owner = userManager.getUser(car->owner);
+    
     carMap.erase(plate);
     auto &userCars = userCarsList[owner->getName()];
     userCars.erase(std::remove(userCars.begin(), userCars.end(), car), userCars.end());
     cars.erase(std::remove(cars.begin(), cars.end(), car), cars.end());
     delete car;
+    return true;
 }
 
 std::vector<Car *> &CarManager::getUserCars(User *user)

@@ -16,6 +16,10 @@ public:
     void adminUI();
     bool registerUser();
     void logout();
+    void printUserCars();
+    void printAllCars();
+    void addCar();//TODO:添加车辆时进行格式检查
+    void deleteCar();
 private:
     //UserManager* userManager;
     User* currentUser = NULL;

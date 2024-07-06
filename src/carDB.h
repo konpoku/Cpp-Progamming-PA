@@ -1,3 +1,6 @@
+#ifndef CARDB_H
+#define CARDB_H
+
 #include <vector>
 #include <string>
 #include <iostream>
@@ -22,12 +25,7 @@ typedef enum
     Green,
     Yellow,
     Black,
-    White,
-    Gray,
-    Purple,
-    Pink,
-    Brown,
-    Orange
+    White
 } Color;
 
 class Car
@@ -43,17 +41,18 @@ public:
 
 class CarManager
 {
-private:
+public:
     std::vector<Car *> cars;//存储所有车辆用于析构
     std::map<std::string, Car *> carMap;
     std::map<std::string, std::vector<Car *>> userCarsList;//这里使用的key是用户名，value是用户车辆数组
-public:
     CarManager();
     ~CarManager();
     //TODO:对owner是否存在进行检查
     void addCar(std::string &plate, std::string &owner, CarType type, int year, Color color);
-    void deleteCar(std::string &plate);
+    bool deleteCar(std::string &plate);
     std::vector<Car *> &getUserCars(User *user);
     Car *findCarByPlate(std::string &plate);
     void Serialize(std::ostream &os);
 };
+extern CarManager carManager;
+#endif
