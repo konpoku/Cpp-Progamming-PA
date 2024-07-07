@@ -64,7 +64,6 @@ bool UI::registerUser()
         return false;
     }
     User *user = userManager.createUser(name, passwordFirst, false);
-    userManager.createUser(name, passwordFirst, false);
     currentUser = user;
     std::cout << "注册成功" << std::endl;
     return true;
@@ -701,6 +700,14 @@ void UI::printSingleCar(Car *car)
         break;
     }
 }
+void UI::quit()
+{
+    //TODO:Serialize
+    std::ofstream userDB("users.json");
+    userManager.serializeUsers(userDB);
+    //carManager.serializeCars();
+    exit(0);
+}
 void UI::guestUI()
 {
     // TODO: Wait for carDB to be implemented
@@ -725,7 +732,7 @@ void UI::guestUI()
             flag = false;
             break;
         case 2:
-            exit(0);
+            quit();
             break;
         case 3:
             printUserCars();
@@ -776,7 +783,7 @@ void UI::adminUI()
             flag = false;
             break;
         case 2:
-            exit(0);
+            quit();
             break;
         case 3:
             printCars();
@@ -836,7 +843,7 @@ void UI::controller()
             }
             else if (choice == 3)
             {
-                break;
+                quit();
             }
             else
             {

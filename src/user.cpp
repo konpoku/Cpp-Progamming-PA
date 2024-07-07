@@ -45,6 +45,11 @@ bool User::checkPassword(std::string password) const
     return hash == passwdHash;
 }
 
+int User::getPasswdHash()
+{
+    return passwdHash;
+}
+
 Admin::Admin(std::string name, std::string password) : User(name, password)
 {
     isAdmin = true;
@@ -82,16 +87,24 @@ void UserManager::deleteUser(User *user)
     users.erase(std::find(users.begin(), users.end(), user));
     userMap.erase(user->getName());
 }
-void UserManager::serializeUser(User *user, std::ostream &os)
+//void UserManager::serializeUser(User *user, std::ostream &os)
+//{
+    //user->serialize(os);
+//}
+void UserManager::serializeUsers(std::ostream &os)
 {
-    user->serialize(os);
-}
-void UserManager::serializeUsers(std::vector<User *> users, std::ostream &os)
-{
+    os.clear();
+    std::vector<UserJson> userJsons;
     for (auto user : users)
     {
-        serializeUser(user, os);
+        UserJson DOM;
+        DOM.name = user->getName();
+        DOM.passwdHash = user->getPasswdHash();
+        DOM.isAdmin = user->isAdmin;
+        userJsons.push_back(DOM);
     }
+    const std::string json_string = rfl::json::write(userJsons);
+    os << json_string << std::endl;
 }
 User *UserManager::getUser(std::string name)
 {
@@ -101,23 +114,23 @@ User *UserManager::getUser(std::string name)
         return nullptr;
 }
 
-void Admin::serialize(std::ostream &os)
-{
-    UserJson DOM;
-    DOM.name = name;
-    DOM.passwdHash = passwdHash;
-    DOM.isAdmin = true;
-    const std::string json_string = rfl::json::write(DOM);
-    os << json_string << std::endl;
-}
-void Guest::serialize(std::ostream &os)
-{
-    UserJson DOM;
-    DOM.name = name;
-    DOM.passwdHash = passwdHash;
-    DOM.isAdmin = false;
-    const std::string json_string = rfl::json::write(DOM);
-    os << json_string << std::endl;
-}
+//void Admin::serialize(std::ostream &os)
+//{
+//    UserJson DOM;
+//    DOM.name = name;
+//    DOM.passwdHash = passwdHash;
+//    DOM.isAdmin = true;
+//    const std::string json_string = rfl::json::write(DOM);
+//    os << json_string << std::endl;
+//}
+//void Guest::serialize(std::ostream &os)
+//{
+//    UserJson DOM;
+//    DOM.name = name;
+//    DOM.passwdHash = passwdHash;
+//    DOM.isAdmin = false;
+//    const std::string json_string = rfl::json::write(DOM);
+//    os << json_string << std::endl;
+//}
 
 

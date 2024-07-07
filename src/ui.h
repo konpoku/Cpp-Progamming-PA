@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <fstream>
 class UI{
 public:
     UI();
@@ -26,6 +27,7 @@ public:
     void modifyCar();
     void deleteUserCar();
     void printSingleCar(Car* car);
+    void quit();
 private:
     //UserManager* userManager;
     User* currentUser = NULL;

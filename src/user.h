@@ -17,8 +17,9 @@ public:
     std::string& getName();
     int setPassword(std::string password);
     bool checkPassword(std::string password) const;
-    virtual void serialize(std::ostream &os) = 0;
+    //virtual void serialize(std::ostream &os) = 0;
     bool isAdmin;
+    int getPasswdHash();
 
 protected:
     std::string name;
@@ -29,7 +30,7 @@ class Admin : public User
 {
 public:
     Admin(std::string name, std::string password);
-    void serialize(std::ostream &os) override;
+    //void serialize(std::ostream &os) override;
     // void setPassword(std::string password) override;
     // bool checkPassword(std::string password) const override;
 };
@@ -38,7 +39,7 @@ class Guest : public User
 {
 public:
     Guest(std::string name, std::string password);
-    void serialize(std::ostream &os) override;
+    //void serialize(std::ostream &os) override;
     // void setPassword(std::string password) override;
     // bool checkPassword(std::string password) const override;
 };
@@ -49,8 +50,8 @@ class UserManager
 public:
     User *createUser(std::string name, std::string password, bool isAdmin);
     void deleteUser(User *user);
-    void serializeUser(User *user, std::ostream &os);
-    void serializeUsers(std::vector<User *> users, std::ostream &os);
+    //void serializeUser(User *user, std::ostream &os);
+    void serializeUsers(std::ostream &os);
     User *getUser(std::string name);
 
 private:
