@@ -19,7 +19,7 @@ CarManager::~CarManager()
 void CarManager::addCar(std::string &plate, std::string &owner, CarType type, int year, Color color)
 {
     Car *newCar = new Car(plate, owner, type, year, color);
-    cars.push_back(newCar);
+    cars.push_back(newCar);//bug: admin 看不到全部车辆
     carMap[plate] = newCar;
     userCarsList[owner].push_back(newCar);
 }
@@ -55,3 +55,19 @@ Car *CarManager::findCarByPlate(std::string &plate)
 void CarManager::Serialize(std::ostream &os)
 {
 }
+
+bool CarManager::findCarByTypeAndColor(CarType type, Color color, std::vector<Car *> &cars)
+{
+    cars.clear();
+    bool flag = false;
+    for (auto car : this->cars)
+    {
+        if (car->type == type && car->color == color)
+        {
+            cars.push_back(car);
+            flag = true;
+        }
+    }
+    return flag;
+}
+

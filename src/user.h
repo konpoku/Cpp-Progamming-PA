@@ -6,6 +6,8 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <rfl/json.hpp>
+#include <rfl.hpp>
 
 class User
 {
@@ -18,7 +20,7 @@ public:
     virtual void serialize(std::ostream &os) = 0;
     bool isAdmin;
 
-private:
+protected:
     std::string name;
     int passwdHash = 0;
 };

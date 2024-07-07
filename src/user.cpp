@@ -1,9 +1,15 @@
 #include "user.h"
+typedef struct
+{
+    std::string name;
+    int passwdHash;
+    bool isAdmin;
+} UserJson;
 User::User(std::string name, std::string password) : name(name)
 {
-    if(setPassword(password) < 0)
+    if (setPassword(password) < 0)
     {
-        std::cout<<"密码太长，请不要多于20个字符"<<std::endl;
+        std::cout << "密码太长，请不要多于20个字符" << std::endl;
     }
 }
 int User::setPassword(std::string password)
@@ -12,7 +18,7 @@ int User::setPassword(std::string password)
     {
         return -1;
     }
-    
+
     for (auto c : password)
     {
         passwdHash += c;
@@ -65,7 +71,7 @@ User *UserManager::createUser(std::string name, std::string password, bool isAdm
     return newUser;
 }
 
-std::string& User::getName()
+std::string &User::getName()
 {
     return name;
 }
@@ -73,7 +79,7 @@ std::string& User::getName()
 void UserManager::deleteUser(User *user)
 {
     delete user;
-    users.erase(std::find(users.begin(),users.end(),user));
+    users.erase(std::find(users.begin(), users.end(), user));
     userMap.erase(user->getName());
 }
 void UserManager::serializeUser(User *user, std::ostream &os)
@@ -97,10 +103,21 @@ User *UserManager::getUser(std::string name)
 
 void Admin::serialize(std::ostream &os)
 {
-    // TODO:implement
+    UserJson DOM;
+    DOM.name = name;
+    DOM.passwdHash = passwdHash;
+    DOM.isAdmin = true;
+    const std::string json_string = rfl::json::write(DOM);
+    os << json_string << std::endl;
 }
 void Guest::serialize(std::ostream &os)
 {
-    // TODO:implement
+    UserJson DOM;
+    DOM.name = name;
+    DOM.passwdHash = passwdHash;
+    DOM.isAdmin = false;
+    const std::string json_string = rfl::json::write(DOM);
+    os << json_string << std::endl;
 }
+
 

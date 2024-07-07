@@ -15,11 +15,17 @@ public:
     void guestUI();
     void adminUI();
     bool registerUser();
+    void changePassword();
     void logout();
     void printUserCars();
-    void printAllCars();
+    void printCars();
     void addCar();//TODO:添加车辆时进行格式检查
     void deleteCar();
+    void searchCar();
+    void addUserCar();
+    void modifyCar();
+    void deleteUserCar();
+    void printSingleCar(Car* car);
 private:
     //UserManager* userManager;
     User* currentUser = NULL;

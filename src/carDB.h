@@ -42,7 +42,7 @@ public:
 class CarManager
 {
 public:
-    std::vector<Car *> cars;//存储所有车辆用于析构
+    std::vector<Car *> cars;
     std::map<std::string, Car *> carMap;
     std::map<std::string, std::vector<Car *>> userCarsList;//这里使用的key是用户名，value是用户车辆数组
     CarManager();
@@ -53,6 +53,8 @@ public:
     std::vector<Car *> &getUserCars(User *user);
     Car *findCarByPlate(std::string &plate);
     void Serialize(std::ostream &os);
+    bool findCarByTypeAndColor(CarType type, Color color,std::vector<Car *> &cars);
+
 };
 extern CarManager carManager;
 #endif
