@@ -21,7 +21,6 @@ public:
     bool isAdmin;
     int getPasswdHash();
 
-protected:
     std::string name;
     int passwdHash = 0;
 };
@@ -49,9 +48,11 @@ class UserManager
 {
 public:
     User *createUser(std::string name, std::string password, bool isAdmin);
+    User *createUser(std::string name, int passwordHash, bool isAdmin);
     void deleteUser(User *user);
     //void serializeUser(User *user, std::ostream &os);
     void serializeUsers(std::ostream &os);
+    void deserializeUsers(std::istream &is);
     User *getUser(std::string name);
 
 private:

@@ -1,10 +1,15 @@
-#include"ui.h"
+#include "ui.h"
 UserManager userManager;
 CarManager carManager;
-int main(){
+
+int main()
+{
     UI ui;
-    //TODO: 读取文件和修改 admin 密码
-    userManager.createUser("admin","admin",true);
+    // TODO: 读取文件和修改 admin 密码
+    std::ifstream userFile("users.json");
+    std::ifstream carFile("cars.json");
+    if(userFile.fail()) userManager.createUser("admin", "admin", true);
+    else userManager.deserializeUsers(userFile);
     ui.controller();
     return 0;
 }

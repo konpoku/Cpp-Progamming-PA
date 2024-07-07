@@ -76,6 +76,23 @@ User *UserManager::createUser(std::string name, std::string password, bool isAdm
     return newUser;
 }
 
+User *UserManager::createUser(std::string name, int passwordHash, bool isAdmin)
+{
+    User *newUser;
+    if (isAdmin)
+    {
+        newUser = new Admin(name, "");
+    }
+    else
+    {
+        newUser = new Guest(name, "");
+    }
+    newUser->passwdHash = passwordHash;
+    users.push_back(newUser);
+    userMap.emplace(name, newUser);
+    return newUser;
+}
+
 std::string &User::getName()
 {
     return name;
@@ -105,6 +122,23 @@ void UserManager::serializeUsers(std::ostream &os)
     }
     const std::string json_string = rfl::json::write(userJsons);
     os << json_string << std::endl;
+}
+void UserManager::deserializeUsers(std::istream &is)
+{
+    std::string json_string;
+    is >> json_string;
+    auto userJsons = rfl::json::read<std::vector<UserJson>>(json_string).value();
+    for (auto userJson : userJsons)
+    {
+        if (userJson.isAdmin)
+        {
+            createUser(userJson.name, userJson.passwdHash, true);
+        }
+        else
+        {
+            createUser(userJson.name, userJson.passwdHash, false);
+        }
+    }
 }
 User *UserManager::getUser(std::string name)
 {
