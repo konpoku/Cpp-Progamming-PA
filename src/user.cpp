@@ -57,9 +57,21 @@ Admin::Admin(std::string name, std::string password) : User(name, password)
     isAdmin = true;
 }
 
+void Admin::printUserInfo()
+{
+    std::cout << "用户名：" << name << std::endl;
+    std::cout << "用户类型：管理员" << std::endl;
+}
+
 Guest::Guest(std::string name, std::string password) : User(name, password)
 {
     isAdmin = false;
+}
+
+void Guest::printUserInfo()
+{
+    std::cout << "用户名：" << name << std::endl;
+    std::cout << "用户类型：普通用户" << std::endl;
 }
 
 User *UserManager::createUser(std::string name, std::string password, bool isAdmin)
@@ -67,7 +79,7 @@ User *UserManager::createUser(std::string name, std::string password, bool isAdm
     User *newUser;
     if (isAdmin)
     {
-        newUser = new Admin(name, password);
+        newUser = new CustomAdmin(name, password);
     }
     else
     {
@@ -83,7 +95,7 @@ User *UserManager::createUser(std::string name, int passwordHash, bool isAdmin)
     User *newUser;
     if (isAdmin)
     {
-        newUser = new Admin(name, "");
+        newUser = new CustomAdmin(name, "");
     }
     else
     {
@@ -170,4 +182,13 @@ User *UserManager::getUser(std::string name)
 //    os << json_string << std::endl;
 //}
 
+CustomAdmin::CustomAdmin(std::string name, std::string password) : Admin(name, password), Guest(name, password) , User(name, password)
+{
+    isAdmin = true;
+}
 
+void CustomAdmin::printUserInfo()
+{
+    std::cout << "用户名：" << name << std::endl;
+    std::cout << "用户类型：管理员住户" << std::endl;
+}

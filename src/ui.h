@@ -15,6 +15,7 @@ public:
     bool login();
     void guestUI();
     void adminUI();
+    void customAdminUI();
     bool registerUser();
     void changePassword();
     void logout();
@@ -32,6 +33,7 @@ private:
     //UserManager* userManager;
     User* currentUser = NULL;
     bool isLoggedIn;
+    bool isUIActive;
 };
 
 

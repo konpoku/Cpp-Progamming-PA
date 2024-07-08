@@ -7,10 +7,13 @@ UI::UI()
 void UI::welcome()
 {
     std::cout << "欢迎使用车辆管理系统" << std::endl;
+    isUIActive = true;
 }
 
 bool UI::login()
 {
+    if (isUIActive == false)
+        return false;
     std::string name, password;
     std::cout << "请输入用户名: ";
     std::cin >> name;
@@ -26,15 +29,41 @@ bool UI::login()
     {
         currentUser = user;
         std::cout << "登陆成功" << std::endl;
-        std::cout << "当前权限：";
-        if (user->isAdmin)
+        if (currentUser->isAdmin)
         {
-            std::cout << "管理员" << std::endl;
+            std::cout << "选择登陆身份：" << std::endl;
+            std::cout << "1. 管理员" << std::endl;
+            std::cout << "2. 有管理员权限的住户" << std::endl;
+            int choice;
+            std::cin >> choice;
+            if (choice == 1)
+            {
+                std::cout << "用户名：" << name << std::endl;
+                std::cout << "用户类型：管理员" << std::endl;
+                adminUI();
+            }
+            else if (choice == 2)
+            {
+                std::cout << "用户名：" << name << std::endl;
+                std::cout << "用户类型：管理员" << std::endl;
+                customAdminUI();
+            }
+            else
+            {
+                std::cout << "非法输入" << std::endl;
+            }
         }
         else
-        {
-            std::cout << "普通用户" << std::endl;
-        }
+            currentUser->printUserInfo();
+        // std::cout << "当前权限：";
+        // if (user->isAdmin)
+        //{
+        //     std::cout << "管理员" << std::endl;
+        // }
+        // else
+        //{
+        //     std::cout << "普通用户" << std::endl;
+        // }
         return true;
     }
     else
@@ -157,16 +186,17 @@ void UI::printCars()
         }
     }
 }
-void checkPlate(const std::string &plate)
+bool checkPlate(const std::string &plate)
 {
     for (auto c : plate)
     {
         if (!(c >= '0' && c <= '9' || c >= 'A' && c <= 'Z'))
         {
             std::cout << "车牌号非法" << std::endl;
-            return;
+            return false;
         }
     }
+    return true;
 }
 void UI::addCar()
 {
@@ -176,7 +206,7 @@ void UI::addCar()
     Color color;
     std::cout << "请输入车牌号: ";
     std::cin >> plate;
-    checkPlate(plate);
+    if (checkPlate(plate) == false) return;
     if (carManager.findCarByPlate(plate) != nullptr)
     {
         std::cout << "车牌号已存在" << std::endl;
@@ -421,7 +451,7 @@ void UI::addUserCar()
     Color color;
     std::cout << "请输入车牌号: ";
     std::cin >> plate;
-    checkPlate(plate);
+    if(checkPlate(plate) == false) return;
     if (carManager.findCarByPlate(plate) != nullptr)
     {
         std::cout << "车牌号已存在" << std::endl;
@@ -702,12 +732,13 @@ void UI::printSingleCar(Car *car)
 }
 void UI::quit()
 {
-    //TODO:Serialize
+    // TODO:Serialize
     std::ofstream userDB("users.json");
     std::ofstream carDB("cars.json");
     userManager.serializeUsers(userDB);
     carManager.serialize(carDB);
-    //carManager.serializeCars();
+    isUIActive = false;
+    // carManager.serializeCars();
     exit(0);
 }
 void UI::guestUI()
@@ -812,6 +843,76 @@ void UI::adminUI()
     }
 }
 
+void UI::customAdminUI()
+{
+    bool flag = true;
+    while (flag == true)
+    {
+        std::cout << "1. 登出" << std::endl;
+        std::cout << "2. 退出" << std::endl;
+        std::cout << "3. 查看车辆" << std::endl;
+        std::cout << "4. 搜索车辆" << std::endl;
+        std::cout << "5. 添加车辆" << std::endl;
+        std::cout << "6. 删除车辆" << std::endl;
+        std::cout << "7. 修改车辆" << std::endl;
+        std::cout << "8. 修改密码" << std::endl;
+        std::cout << "9. 查看个人车辆" << std::endl;
+        std::cout << "10. 查询车辆" << std::endl;
+        std::cout << "11. 添加个人车辆" << std::endl;
+        std::cout << "12. 删除个人车辆" << std::endl;
+        std::cout << "13. 修改个人车辆" << std::endl;
+        std::cout << "请输入: ";
+        int choice;
+        std::cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            logout();
+            flag = false;
+            break;
+        case 2:
+            quit();
+            break;
+        case 3:
+            printCars();
+            break;
+        case 4:
+            searchCar();
+            break;
+        case 5:
+            addCar();
+            break;
+        case 6:
+            deleteCar();
+            break;
+        case 7:
+            modifyCar();
+            break;
+        case 8:
+            changePassword();
+            break;
+        case 9:
+            printUserCars();
+            break;
+        case 10:
+            searchCar();
+            break;
+        case 11:
+            addUserCar();
+            break;
+        case 12:
+            deleteUserCar();
+            break;
+        case 13:
+            modifyCar();
+            break;
+        default:
+            std::cout << "非法输入" << std::endl;
+            break;
+        }
+    }
+}
+
 void UI::controller()
 {
     welcome();
@@ -819,7 +920,7 @@ void UI::controller()
     {
         if (isLoggedIn && currentUser != nullptr)
         {
-            currentUser->isAdmin ? adminUI() : guestUI();
+            currentUser->isAdmin ? customAdminUI() : guestUI();
         }
         else
         {
