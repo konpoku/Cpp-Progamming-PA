@@ -10,6 +10,7 @@ int main()
     std::ifstream carFile("cars.json");
     if(userFile.fail()) userManager.createUser("admin", "admin", true);
     else userManager.deserializeUsers(userFile);
+    if(carFile.fail() == false) carManager.deserializeCars(carFile);
     ui.controller();
     return 0;
 }

@@ -1,4 +1,6 @@
 #include "user.h"
+#include <rfl/json.hpp>
+#include <rfl.hpp>
 typedef struct
 {
     std::string name;
@@ -14,11 +16,11 @@ User::User(std::string name, std::string password) : name(name)
 }
 int User::setPassword(std::string password)
 {
+    passwdHash = 0;
     if (password.length() > 20)
     {
         return -1;
     }
-
     for (auto c : password)
     {
         passwdHash += c;
@@ -90,6 +92,7 @@ User *UserManager::createUser(std::string name, int passwordHash, bool isAdmin)
     newUser->passwdHash = passwordHash;
     users.push_back(newUser);
     userMap.emplace(name, newUser);
+    //carManager.userCarsList.emplace(name, std::vector<Car *>());//bug: 反复引用
     return newUser;
 }
 

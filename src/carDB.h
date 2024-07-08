@@ -8,7 +8,7 @@
 #include <fstream>
 #include "user.h"
 #include <map>
-typedef enum
+typedef enum class CarType
 {
     BaoNiu,   // 宝牛
     BiFeiDi,  // 比非迪
@@ -18,7 +18,7 @@ typedef enum
     XiaoZhong // 小众
 } CarType;
 
-typedef enum
+typedef enum class Color
 {
     Red,
     Blue,
@@ -27,6 +27,15 @@ typedef enum
     Black,
     White
 } Color;
+
+typedef struct
+{
+    std::string plate;
+    std::string owner;
+    CarType type;
+    int year;
+    Color color;
+} CarJson;
 
 class Car
 {
@@ -52,9 +61,11 @@ public:
     bool deleteCar(std::string &plate);
     std::vector<Car *> &getUserCars(User *user);
     Car *findCarByPlate(std::string &plate);
-    void Serialize(std::ostream &os);
+    void serialize(std::ostream &os);
     bool findCarByTypeAndColor(CarType type, Color color,std::vector<Car *> &cars);
+    void deserializeCars(std::ifstream &is);
 
 };
+extern UserManager userManager;
 extern CarManager carManager;
 #endif

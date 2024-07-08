@@ -1,4 +1,6 @@
 #include "carDB.h"
+#include <rfl/json.hpp>
+#include <rfl.hpp>
 extern UserManager userManager;
 Car::Car(std::string &plate, std::string &owner, CarType type, int year, Color color) : plate(plate), owner(owner), type(type), year(year), color(color)
 {
@@ -52,8 +54,22 @@ Car *CarManager::findCarByPlate(std::string &plate)
     return carMap[plate];
 }
 
-void CarManager::Serialize(std::ostream &os)
+void CarManager::serialize(std::ostream &os)
 {
+    os.clear();
+    std::vector<CarJson> carJsons;
+    for(auto car : cars)
+    {
+        CarJson carJson;
+        carJson.plate = car->plate;
+        carJson.owner = car->owner;
+        carJson.type = car->type;
+        carJson.year = car->year;
+        carJson.color = car->color;
+        carJsons.push_back(carJson);
+    }
+    const std::string carsJson = rfl::json::write(carJsons);
+    os<<carsJson<<std::endl;
 }
 
 bool CarManager::findCarByTypeAndColor(CarType type, Color color, std::vector<Car *> &cars)
@@ -71,3 +87,16 @@ bool CarManager::findCarByTypeAndColor(CarType type, Color color, std::vector<Ca
     return flag;
 }
 
+void CarManager::deserializeCars(std::ifstream &is)
+{
+    std::string json_string;
+    is >> json_string;
+    auto carJsons = rfl::json::read<std::vector<CarJson>>(json_string).value();
+    for (auto carJson : carJsons)
+    {
+        Car *car = new Car(carJson.plate, carJson.owner, carJson.type, carJson.year, carJson.color);
+        cars.push_back(car);
+        carMap[carJson.plate] = car;
+        userCarsList[carJson.owner].push_back(car);
+    }
+}

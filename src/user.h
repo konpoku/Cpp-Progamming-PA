@@ -6,8 +6,9 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
-#include <rfl/json.hpp>
-#include <rfl.hpp>
+//#include <rfl/json.hpp>
+//#include <rfl.hpp>
+
 
 class User
 {
@@ -59,7 +60,6 @@ private:
     std::vector<User *> users;
     std::map<std::string, User *> userMap;
 };
-
 
 extern UserManager userManager;
 #endif // USER_H

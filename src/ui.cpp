@@ -203,22 +203,22 @@ void UI::addCar()
     switch (choice)
     {
     case 1:
-        type = BaoNiu;
+        type = CarType::BaoNiu;
         break;
     case 2:
-        type = BiFeiDi;
+        type = CarType::BiFeiDi;
         break;
     case 3:
-        type = BenPao;
+        type = CarType::BenPao;
         break;
     case 4:
-        type = BiaoZhi;
+        type = CarType::BiaoZhi;
         break;
     case 5:
-        type = TogeToge;
+        type = CarType::TogeToge;
         break;
     case 6:
-        type = XiaoZhong;
+        type = CarType::XiaoZhong;
         break;
     default:
         std::cout << "非法输入" << std::endl;
@@ -235,22 +235,22 @@ void UI::addCar()
     switch (choice)
     {
     case 1:
-        color = Red;
+        color = Color::Red;
         break;
     case 2:
-        color = Blue;
+        color = Color::Blue;
         break;
     case 3:
-        color = Green;
+        color = Color::Green;
         break;
     case 4:
-        color = Yellow;
+        color = Color::Yellow;
         break;
     case 5:
-        color = Black;
+        color = Color::Black;
         break;
     case 6:
-        color = White;
+        color = Color::White;
         break;
     default:
         std::cout << "非法输入" << std::endl;
@@ -344,22 +344,22 @@ void UI::searchCar()
         switch (choice)
         {
         case 1:
-            type = BaoNiu;
+            type = CarType::BaoNiu;
             break;
         case 2:
-            type = BiFeiDi;
+            type = CarType::BiFeiDi;
             break;
         case 3:
-            type = BenPao;
+            type = CarType::BenPao;
             break;
         case 4:
-            type = BiaoZhi;
+            type = CarType::BiaoZhi;
             break;
         case 5:
-            type = TogeToge;
+            type = CarType::TogeToge;
             break;
         case 6:
-            type = XiaoZhong;
+            type = CarType::XiaoZhong;
             break;
         default:
             std::cout << "非法输入" << std::endl;
@@ -377,22 +377,22 @@ void UI::searchCar()
         switch (choice)
         {
         case 1:
-            color = Red;
+            color = Color::Red;
             break;
         case 2:
-            color = Blue;
+            color = Color::Blue;
             break;
         case 3:
-            color = Green;
+            color = Color::Green;
             break;
         case 4:
-            color = Yellow;
+            color = Color::Yellow;
             break;
         case 5:
-            color = Black;
+            color = Color::Black;
             break;
         case 6:
-            color = White;
+            color = Color::White;
             break;
         default:
             std::cout << "非法输入" << std::endl;
@@ -441,22 +441,22 @@ void UI::addUserCar()
     switch (choice)
     {
     case 1:
-        type = BaoNiu;
+        type = CarType::BaoNiu;
         break;
     case 2:
-        type = BiFeiDi;
+        type = CarType::BiFeiDi;
         break;
     case 3:
-        type = BenPao;
+        type = CarType::BenPao;
         break;
     case 4:
-        type = BiaoZhi;
+        type = CarType::BiaoZhi;
         break;
     case 5:
-        type = TogeToge;
+        type = CarType::TogeToge;
         break;
     case 6:
-        type = XiaoZhong;
+        type = CarType::XiaoZhong;
         break;
     default:
         std::cout << "非法输入" << std::endl;
@@ -473,22 +473,22 @@ void UI::addUserCar()
     switch (choice)
     {
     case 1:
-        color = Red;
+        color = Color::Red;
         break;
     case 2:
-        color = Blue;
+        color = Color::Blue;
         break;
     case 3:
-        color = Green;
+        color = Color::Green;
         break;
     case 4:
-        color = Yellow;
+        color = Color::Yellow;
         break;
     case 5:
-        color = Black;
+        color = Color::Black;
         break;
     case 6:
-        color = White;
+        color = Color::White;
         break;
     default:
         std::cout << "非法输入" << std::endl;
@@ -560,22 +560,22 @@ void UI::modifyCar()
         switch (choice)
         {
         case 1:
-            car->type = BaoNiu;
+            car->type = CarType::BaoNiu;
             break;
         case 2:
-            car->type = BiFeiDi;
+            car->type = CarType::BiFeiDi;
             break;
         case 3:
-            car->type = BenPao;
+            car->type = CarType::BenPao;
             break;
         case 4:
-            car->type = BiaoZhi;
+            car->type = CarType::BiaoZhi;
             break;
         case 5:
-            car->type = TogeToge;
+            car->type = CarType::TogeToge;
             break;
         case 6:
-            car->type = XiaoZhong;
+            car->type = CarType::XiaoZhong;
             break;
         default:
             std::cout << "非法输入" << std::endl;
@@ -594,22 +594,22 @@ void UI::modifyCar()
         switch (choice)
         {
         case 1:
-            car->color = Red;
+            car->color = Color::Red;
             break;
         case 2:
-            car->color = Blue;
+            car->color = Color::Blue;
             break;
         case 3:
-            car->color = Green;
+            car->color = Color::Green;
             break;
         case 4:
-            car->color = Yellow;
+            car->color = Color::Yellow;
             break;
         case 5:
-            car->color = Black;
+            car->color = Color::Black;
             break;
         case 6:
-            car->color = White;
+            car->color = Color::White;
             break;
         default:
             std::cout << "非法输入" << std::endl;
@@ -657,22 +657,22 @@ void UI::printSingleCar(Car *car)
     std::cout << "车辆类型: ";
     switch (car->type)
     {
-    case BaoNiu:
+    case CarType::BaoNiu:
         std::cout << "宝牛" << std::endl;
         break;
-    case BiFeiDi:
+    case CarType::BiFeiDi:
         std::cout << "比非迪" << std::endl;
         break;
-    case BenPao:
+    case CarType::BenPao:
         std::cout << "奔跑" << std::endl;
         break;
-    case BiaoZhi:
+    case CarType::BiaoZhi:
         std::cout << "标至" << std::endl;
         break;
-    case TogeToge:
+    case CarType::TogeToge:
         std::cout << "有刺无刺牌超级跑车" << std::endl;
         break;
-    case XiaoZhong:
+    case CarType::XiaoZhong:
         std::cout << "小众" << std::endl;
         break;
     }
@@ -680,22 +680,22 @@ void UI::printSingleCar(Car *car)
     std::cout << "车辆颜色: ";
     switch (car->color)
     {
-    case Red:
+    case Color::Red:
         std::cout << "红色" << std::endl;
         break;
-    case Blue:
+    case Color::Blue:
         std::cout << "蓝色" << std::endl;
         break;
-    case Green:
+    case Color::Green:
         std::cout << "绿色" << std::endl;
         break;
-    case Yellow:
+    case Color::Yellow:
         std::cout << "黄色" << std::endl;
         break;
-    case Black:
+    case Color::Black:
         std::cout << "黑色" << std::endl;
         break;
-    case White:
+    case Color::White:
         std::cout << "白色" << std::endl;
         break;
     }
@@ -704,7 +704,9 @@ void UI::quit()
 {
     //TODO:Serialize
     std::ofstream userDB("users.json");
+    std::ofstream carDB("cars.json");
     userManager.serializeUsers(userDB);
+    carManager.serialize(carDB);
     //carManager.serializeCars();
     exit(0);
 }
