@@ -1,13 +1,14 @@
 #ifndef UI_H
 #define UI_H
-#include"user.h"
-#include"carDB.h"
+#include "user.h"
+#include "carDB.h"
 #include <map>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
-class UI{
+class UI
+{
 public:
     UI();
     void controller();
@@ -21,20 +22,23 @@ public:
     void logout();
     void printUserCars();
     void printCars();
-    void addCar();//TODO:添加车辆时进行格式检查
+    void addCar(); // TODO:添加车辆时进行格式检查
     void deleteCar();
     void searchCar();
     void addUserCar();
     void modifyCar();
+    void modifyUserCar();
     void deleteUserCar();
-    void printSingleCar(Car* car);
+    void printSingleCar(Car *car);
     void quit();
-private:
-    //UserManager* userManager;
-    User* currentUser = NULL;
+    UserManager* currUserManager;
+    User *currentUser = NULL;
     bool isLoggedIn;
     bool isUIActive;
+    bool isAdmin;
+    bool isGuest;
+    
 };
-
-
+extern CarManager carManager;
+extern UserManager userManager;
 #endif

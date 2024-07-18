@@ -140,8 +140,9 @@ void UserManager::serializeUsers(std::ostream &os)
 }
 void UserManager::deserializeUsers(std::istream &is)
 {
-    std::string json_string;
-    is >> json_string;
+    std::stringstream ss;
+    ss << is.rdbuf();
+    std::string json_string(ss.str());
     auto userJsons = rfl::json::read<std::vector<UserJson>>(json_string).value();
     for (auto userJson : userJsons)
     {

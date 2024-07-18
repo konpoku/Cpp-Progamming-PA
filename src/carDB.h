@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include "user.h"
 #include <map>
 typedef enum class CarType
@@ -45,7 +46,11 @@ public:
     CarType type;
     int year;
     Color color;
+    Car();
     Car(std::string &plate, std::string &owner, CarType type, int year, Color color);
+    std::string &getPlate();
+    std::string &getOwner();
+    CarType getType();
 };
 
 class CarManager
@@ -54,6 +59,7 @@ public:
     std::vector<Car *> cars;
     std::map<std::string, Car *> carMap;
     std::map<std::string, std::vector<Car *>> userCarsList;//这里使用的key是用户名，value是用户车辆数组
+    bool isCarManagerActive = false;
     CarManager();
     ~CarManager();
     //TODO:对owner是否存在进行检查
@@ -66,6 +72,4 @@ public:
     void deserializeCars(std::ifstream &is);
 
 };
-extern UserManager userManager;
-extern CarManager carManager;
 #endif

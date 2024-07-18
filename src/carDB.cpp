@@ -2,12 +2,33 @@
 #include <rfl/json.hpp>
 #include <rfl.hpp>
 extern UserManager userManager;
+Car::Car()
+{
+}
 Car::Car(std::string &plate, std::string &owner, CarType type, int year, Color color) : plate(plate), owner(owner), type(type), year(year), color(color)
 {
 }
 
+std::string &Car::getPlate()
+{
+    return plate;
+}
+
+std::string &Car::getOwner()
+{
+    return owner;
+}
+
+CarType Car::getType()
+{
+    return type;
+}
+
+
+
 CarManager::CarManager()
 {
+    isCarManagerActive = true;
 }
 
 CarManager::~CarManager()
@@ -20,6 +41,11 @@ CarManager::~CarManager()
 
 void CarManager::addCar(std::string &plate, std::string &owner, CarType type, int year, Color color)
 {
+    if (isCarManagerActive == false)
+    {
+        return;
+    }
+    
     Car *newCar = new Car(plate, owner, type, year, color);
     cars.push_back(newCar);//bug: admin 看不到全部车辆
     carMap[plate] = newCar;
@@ -89,8 +115,9 @@ bool CarManager::findCarByTypeAndColor(CarType type, Color color, std::vector<Ca
 
 void CarManager::deserializeCars(std::ifstream &is)
 {
-    std::string json_string;
-    is >> json_string;
+    std::stringstream ss;
+    ss << is.rdbuf();
+    std::string json_string(ss.str());
     auto carJsons = rfl::json::read<std::vector<CarJson>>(json_string).value();
     for (auto carJson : carJsons)
     {

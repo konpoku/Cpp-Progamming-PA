@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <sstream>
 // #include <rfl/json.hpp>
 // #include <rfl.hpp>
 
@@ -21,7 +22,7 @@ public:
     bool isAdmin;
     int getPasswdHash();
     virtual void printUserInfo() = 0;
-
+    bool isUserActive = false;
     std::string name;
     int passwdHash = 0;
 };

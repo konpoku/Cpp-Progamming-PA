@@ -2,6 +2,7 @@
 UI::UI()
 {
     currentUser = nullptr;
+    this->currUserManager = &userManager;
 }
 
 void UI::welcome()
@@ -17,10 +18,18 @@ bool UI::login()
     std::string name, password;
     std::cout << "请输入用户名: ";
     std::cin >> name;
+    
     User *user = userManager.getUser(name);
+    
+    
     if (user == nullptr)
     {
         std::cout << "用户不存在" << std::endl;
+        return false;
+    }
+    if (user->isUserActive)
+    {
+        std::cout << "用户已登录" << std::endl;
         return false;
     }
     std::cout << "请输入密码: ";
@@ -29,8 +38,10 @@ bool UI::login()
     {
         currentUser = user;
         std::cout << "登陆成功" << std::endl;
+        currentUser->isUserActive = true;
         if (currentUser->isAdmin)
         {
+            isAdmin = true;
             std::cout << "选择登陆身份：" << std::endl;
             std::cout << "1. 管理员" << std::endl;
             std::cout << "2. 有管理员权限的住户" << std::endl;
@@ -54,7 +65,10 @@ bool UI::login()
             }
         }
         else
+        {
             currentUser->printUserInfo();
+            isGuest = true;
+        }
         // std::cout << "当前权限：";
         // if (user->isAdmin)
         //{
@@ -116,6 +130,9 @@ void UI::changePassword()
 
 void UI::logout()
 {
+    currentUser->isUserActive = false;
+    isAdmin = false;
+    isGuest = false;
     currentUser = nullptr;
     std::cout << "登出成功" << std::endl;
 }
@@ -129,6 +146,7 @@ void UI::printUserCars()
     {
         std::cout << index << ". ";
         std::cout << "车牌号: " << car->plate << std::endl;
+        index++;
         // std::cout << "车辆类型: " << car->type << std::endl;
         // std::cout << "车辆年份: " << car->year << std::endl;
         // std::cout << "车辆颜色: " << car->color << std::endl;
@@ -162,6 +180,7 @@ void UI::printCars()
     {
         std::cout << index << ". ";
         std::cout << "车牌号: " << car->plate << std::endl;
+        index++;
         // std::cout << "车辆类型: " << car->type << std::endl;
         // std::cout << "车辆年份: " << car->year << std::endl;
         // std::cout << "车辆颜色: " << car->color << std::endl;
@@ -183,6 +202,7 @@ void UI::printCars()
         else if (choice != 0)
         {
             std::cout << "非法输入" << std::endl;
+            return;
         }
     }
 }
@@ -304,6 +324,8 @@ void UI::deleteCar()
     {
         std::cout << index << ". ";
         std::cout << "车牌号: " << car->plate << std::endl;
+        index++;
+
         // std::cout << "车辆类型: " << car->type << std::endl;
         // std::cout << "车辆年份: " << car->year << std::endl;
         // std::cout << "车辆颜色: " << car->color << std::endl;
@@ -527,17 +549,10 @@ void UI::addUserCar()
     carManager.addCar(plate, currentUser->getName(), type, year, color);
     std::cout << "添加成功" << std::endl;
 }
-void UI::modifyCar()
+void UI::modifyUserCar()
 {
     std::vector<Car *> *cars;
-    if (currentUser->isAdmin)
-    {
-        cars = &carManager.cars;
-    }
-    else
-    {
-        cars = &carManager.getUserCars(currentUser);
-    }
+    cars = &carManager.getUserCars(currentUser);
     std::string plate;
     int index = 1;
     std::cout << "共有" << cars->size() << "辆车" << std::endl;
@@ -549,6 +564,125 @@ void UI::modifyCar()
     {
         std::cout << index << ". ";
         std::cout << "车牌号: " << car->plate << std::endl;
+        index++;
+        // std::cout << "车辆类型: " << car->type << std::endl;
+        // std::cout << "车辆年份: " << car->year << std::endl;
+        // std::cout << "车辆颜色: " << car->color << std::endl;
+    }
+    std::cout << "请输入要修改的车牌号: ";
+    std::cin >> plate;
+    Car *car = carManager.findCarByPlate(plate);
+    if (car == nullptr)
+    {
+        std::cout << "未找到车辆" << std::endl;
+        return;
+    }
+    printSingleCar(car);
+    int choice;
+    std::cout << "请选择要修改的项目" << std::endl;
+    std::cout << "1. 车辆年份" << std::endl;
+    std::cout << "2. 车辆类型" << std::endl;
+    std::cout << "3. 车辆颜色" << std::endl;
+    std::cin >> choice;
+    int year;
+    std::string owner;
+
+    switch (choice)
+    {
+    case 1:
+        std::cout << "请输入新车辆年份: ";
+        std::cin >> year;
+        car->year = year;
+        break;
+    case 2:
+        std::cout << "请输入新车辆类型: " << std::endl;
+        std::cout << "1. 宝牛" << std::endl;
+        std::cout << "2. 比非迪" << std::endl;
+        std::cout << "3. 奔跑" << std::endl;
+        std::cout << "4. 标至" << std::endl;
+        std::cout << "5. 有刺无刺牌超级跑车" << std::endl;
+        std::cout << "6. 小众" << std::endl;
+        std::cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            car->type = CarType::BaoNiu;
+            break;
+        case 2:
+            car->type = CarType::BiFeiDi;
+            break;
+        case 3:
+            car->type = CarType::BenPao;
+            break;
+        case 4:
+            car->type = CarType::BiaoZhi;
+            break;
+        case 5:
+            car->type = CarType::TogeToge;
+            break;
+        case 6:
+            car->type = CarType::XiaoZhong;
+            break;
+        default:
+            std::cout << "非法输入" << std::endl;
+            return;
+        }
+        break;
+    case 3:
+        std::cout << "请输入新车辆颜色: " << std::endl;
+        std::cout << "1. 红色" << std::endl;
+        std::cout << "2. 蓝色" << std::endl;
+        std::cout << "3. 绿色" << std::endl;
+        std::cout << "4. 黄色" << std::endl;
+        std::cout << "5. 黑色" << std::endl;
+        std::cout << "6. 白色" << std::endl;
+        std::cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            car->color = Color::Red;
+            break;
+        case 2:
+            car->color = Color::Blue;
+            break;
+        case 3:
+            car->color = Color::Green;
+            break;
+        case 4:
+            car->color = Color::Yellow;
+            break;
+        case 5:
+            car->color = Color::Black;
+            break;
+        case 6:
+            car->color = Color::White;
+            break;
+        default:
+            std::cout << "非法输入" << std::endl;
+            return;
+        }
+        break;
+    default:
+        std::cout << "非法输入" << std::endl;
+        break;
+    }
+}
+void UI::modifyCar()
+{
+    std::vector<Car *> *cars;
+    cars = &carManager.cars;
+    std::string plate;
+    int index = 1;
+    std::cout << "共有" << cars->size() << "辆车" << std::endl;
+    if (cars->size() == 0)
+    {
+        return;
+    }
+    for (auto car : *cars)
+    {
+        std::cout << index << ". ";
+        std::cout << "车牌号: " << car->getPlate() << std::endl;
+        index++;
         // std::cout << "车辆类型: " << car->type << std::endl;
         // std::cout << "车辆年份: " << car->year << std::endl;
         // std::cout << "车辆颜色: " << car->color << std::endl;
@@ -665,6 +799,7 @@ void UI::deleteUserCar()
     {
         std::cout << index << ". ";
         std::cout << "车牌号: " << car->plate << std::endl;
+        index++;
         // std::cout << "车辆类型: " << car->type << std::endl;
         // std::cout << "车辆年份: " << car->year << std::endl;
         // std::cout << "车辆颜色: " << car->color << std::endl;
@@ -685,7 +820,7 @@ void UI::printSingleCar(Car *car)
     std::cout << "车牌号: " << car->plate << std::endl;
     std::cout << "车辆主人: " << car->owner << std::endl;
     std::cout << "车辆类型: ";
-    switch (car->type)
+    switch (car->getType())
     {
     case CarType::BaoNiu:
         std::cout << "宝牛" << std::endl;
@@ -783,7 +918,7 @@ void UI::guestUI()
             deleteUserCar();
             break;
         case 8:
-            modifyCar();
+            modifyUserCar();
             break;
         default:
             std::cout << "非法输入" << std::endl;
@@ -904,7 +1039,7 @@ void UI::customAdminUI()
             deleteUserCar();
             break;
         case 13:
-            modifyCar();
+            modifyUserCar();
             break;
         default:
             std::cout << "非法输入" << std::endl;
